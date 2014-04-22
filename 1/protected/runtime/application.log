@@ -1,0 +1,38 @@
+2013/12/14 16:51:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "index" 动作.' in /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php:3668
+Stack trace:
+#0 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(3550): CController->missingAction('')
+#1 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(1746): CController->run('')
+#2 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(1666): CWebApplication->runController('')
+#3 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(1191): CWebApplication->processRequest()
+#4 /Library/WebServer/www/webroot/saeYiiSite1/2/index.php(16): CApplication->run()
+#5 {main}
+REQUEST_URI=/saeYiiSite1/2/
+---
+2013/12/14 16:51:39 [error] [exception.CException] exception 'CException' with message 'CAssetManager.basePath "/Library/WebServer/www/webroot/saeYiiSite1/2/assets" 是无效的. 请确定它是一个可被 Web server process 写入资料的目录.' in /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/web/CAssetManager.php:138
+Stack trace:
+#0 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/web/CAssetManager.php(123): CAssetManager->setBasePath('/Library/WebSer...')
+#1 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/web/CAssetManager.php(217): CAssetManager->getBasePath()
+#2 /Library/WebServer/www/webroot/saeYiiSite1/2/protected/modules/admin/AdminModule.php(30): CAssetManager->publish('/Library/WebSer...')
+#3 /Library/WebServer/www/webroot/saeYiiSite1/2/protected/modules/admin/components/Controller.php(79): AdminModule->getAssetsUrl()
+#4 /Library/WebServer/www/webroot/saeYiiSite1/2/protected/modules/admin/components/Controller.php(155): Controller->getAssetsUrl()
+#5 /Library/WebServer/www/webroot/saeYiiSite1/2/protected/modules/admin/views/layouts/main.php(7): Controller->url('css/base.css')
+#6 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(3419): require('/Library/WebSer...')
+#7 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(3398): CBaseController->renderInternal('/Library/WebSer...', Array, true)
+#8 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(3792): CBaseController->renderFile('/Library/WebSer...', Array, true)
+#9 /Library/WebServer/www/webroot/saeYiiSite1/2/protected/modules/admin/components/Controller.php(117): CController->render('login', Array, true)
+#10 /Library/WebServer/www/webroot/saeYiiSite1/2/protected/modules/admin/controllers/SiteController.php(13): Controller->render('login', Array)
+#11 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(4058): SiteController->actionLogin()
+#12 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(3570): CInlineAction->runWithParams(Array)
+#13 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(6743): CController->runAction(Object(CInlineAction))
+#14 /Library/WebServer/www/webroot/saeYiiSite1/2/protected/modules/admin/components/Controller.php(48): CFilterChain->run()
+#15 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(6785): Controller->filterCheckLogin(Object(CFilterChain))
+#16 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(6740): CInlineFilter->filter(Object(CFilterChain))
+#17 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(3560): CFilterChain->run()
+#18 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(3545): CController->runActionWithFilters(Object(CInlineAction), Array)
+#19 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(1746): CController->run('login')
+#20 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(1666): CWebApplication->runController('admin/site/logi...')
+#21 /Library/WebServer/www/webroot/saeYiiSite1/2/vendor/yiisoft/yii/framework/yiilite.php(1191): CWebApplication->processRequest()
+#22 /Library/WebServer/www/webroot/saeYiiSite1/2/index.php(16): CApplication->run()
+#23 {main}
+REQUEST_URI=/saeYiiSite1/2/admin/site/login
+---
