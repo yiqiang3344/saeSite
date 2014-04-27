@@ -61,30 +61,43 @@
         <echo msg="message: ${msg.out}" />
     </target>
 
-    <target name="coffee" description="generete site and admin js" depends="">
-        <exec dir="${site.number}" command="coffee --output protected/modules/admin/script/js/  --compile coffee/admin/js/" outputProperty="msg.out"/>
+    <target name="coffee" description="generete site js" depends="">
+        <exec dir="${site.number}" command="coffee --output js/  --compile coffee/js/" outputProperty="msg.out"/>
         <echo msg="message: ${msg.out}" />
-        <exec dir="${site.number}" command="coffee --output js/  --compile coffee/site/js/" outputProperty="msg.out"/>
-        <echo msg="message: ${msg.out}" />
-        <exec dir="${site.number}" command="coffee --output dev/js/  --compile coffee/site/dev/" outputProperty="msg.out"/>
+        <exec dir="${site.number}" command="coffee --output dev/js/  --compile coffee/dev/" outputProperty="msg.out"/>
         <echo msg="message: ${msg.out}" />
     </target>
 
-    <target name="sass" description="generete site and admin css" depends="">
-        <exec dir="${site.number}" command="sass --style --trace sass/site/base.scss css/base.css" outputProperty="msg.out"/>
+    <target name="coffeeAdmin" description="generete admin js" depends="">
+        <exec dir="${site.number}" command="coffee --output protected/modules/admin/script/js/  --compile protected/modules/admin/coffee/" outputProperty="msg.out"/>
+        <echo msg="message: ${msg.out}" />
+    </target>
+
+    <target name="sass" description="generete site css" depends="">
+        <exec dir="${site.number}" command="sass --style --trace sass/base.scss css/base.css" outputProperty="msg.out"/>
         <echo msg="message of site base.css :${msg.out}" />
-        <exec dir="${site.number}" command="sass --style --trace sass/site/page.scss css/page.css" outputProperty="msg.out"/>
+        <exec dir="${site.number}" command="sass --style --trace sass/page.scss css/page.css" outputProperty="msg.out"/>
         <echo msg="message of site page.css :${msg.out}" />
-        <exec dir="${site.number}" command="sass --style --trace sass/admin/base.scss protected/modules/admin/script/css/base.css" outputProperty="msg.out"/>
+    </target>
+
+    <target name="sassAdmin" description="generete admin css" depends="">
+        <exec dir="${site.number}" command="sass --style --trace protected/modules/admin/sass/base.scss protected/modules/admin/script/css/base.css" outputProperty="msg.out"/>
         <echo msg="message of admin base.css :${msg.out}" />
-        <exec dir="${site.number}" command="sass --style --trace sass/admin/page.scss protected/modules/admin/script/css/page.css" outputProperty="msg.out"/>
+        <exec dir="${site.number}" command="sass --style --trace protected/modules/admin/sass/page.scss protected/modules/admin/script/css/page.css" outputProperty="msg.out"/>
         <echo msg="message of admin page.css :${msg.out}" />
     </target>
 
-    <target name="setCssJs" description="init code,coffee to js and sass to css and remove assets." depends="coffee,sass,rmAssets"></target>
+    <target name="setCssJs" description="set site coffee to js and sass to css." depends="coffee,sass"></target>
 
-    <target name="coffeeViews" description="set views coffee file to js file" depends="coffee">
+    <target name="setAdminCssJs" description="set admin coffee to js and sass to css and remove assets." depends="coffeeAdmin,sassAdmin,rmAssets"></target>
+
+    <target name="coffeeViews" description="set views coffee file to js file" depends="setCssJs">
         <exec dir="${site.number}" command="node ../build/js/coffeeViews.js" outputProperty="msg.out"/>
+        <echo msg="message: ${msg.out}" />
+    </target>
+
+    <target name="coffeeAdminViews" description="set views coffee file to js file" depends="setAdminCssJs">
+        <exec dir="${site.number}" command="node ../build/js/coffeeAdminViews.js" outputProperty="msg.out"/>
         <echo msg="message: ${msg.out}" />
     </target>
 
@@ -160,7 +173,7 @@
 
     <target name="release" description="release product." depends="config,setCssJs,clearLangs,initLangs,translate,cacheCode,mini,optimizeJs,cpUrlJs"></target>
 
-    <target name="releaseJs" description="release product." depends="config,sass,rmAssets,coffeeViews,clearLangs,initLangs,translate,cacheCode,mini,cpUrlJs"></target>
+    <target name="releaseJs" description="release product." depends="config,coffeeViews,coffeeAdminViews,clearLangs,initLangs,translate,cacheCode,mini,cpUrlJs"></target>
 
     <target name="export" description="export product site">
         <if>

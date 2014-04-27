@@ -1,0 +1,292 @@
+/************************************/
+/* sass变量方法定义                   */
+/************************************/
+$siteBgColor : #f1f1f1;
+$siteBaseFontSize : 14px;
+$isIe: true !default;
+$red : #FF0000;
+$black : #000;
+$blue :  #0076d1;
+$yellow : #fde900;
+$pink :  #8c1227;
+$white : #fff;
+$gray :  #777;
+@function color($c){
+    @if $c=="red"{
+        @return $red;
+    }@else if $c=="black"{
+        @return $black;
+    }@else if $c=="blue"{
+        @return $blue;
+    }@else if $c=="yellow"{
+        @return $yellow;
+    }@else if $c=="pink"{
+        @return $pink;
+    }@else if $c=="white"{
+        @return $white;
+    }@else if $c=="gray"{
+        @return $gray;
+    }
+}
+/************************************/
+/* 布局                              */
+/************************************/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form, input, textarea, p, th, td{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font:12px/1.2 Arial,Microsoft YaHei, Helvetica, sans-serif;
+    height: 100%;
+    color: #000;
+    background-color: $siteBgColor;
+    font-size: $siteBaseFontSize;
+}
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+samp{
+    font-family: Arial, Helvetica, sans-serif;
+}
+ol, ul, menu{
+    list-style: none;
+}
+a{
+    color: #000; text-decoration: none; cursor: pointer;
+    &:hover{color:#3468F1;text-decoration:none }
+}
+img{
+    border: none;
+}
+em, i{
+    font-style: normal;
+}
+/*clear*/
+.clearfix {
+    @if $isIe {
+        *zoom: 1;
+    }
+
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+    &:after {
+        clear: both;
+        overflow: hidden;
+    }
+}
+.lh2{line-height: 2}
+/*display*/
+.db{
+    display: block;
+}
+.dn{
+    display: none;
+}
+.vh{
+    visibility: hidden;
+}
+.dib{
+    display: inline-block;
+}
+.ofh{
+    overflow: hidden;
+}
+/*float position*/
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.pr{
+    position: relative;
+}
+.pa{
+    position: absolute;
+}
+.t0{
+    top:0;
+}
+.r0{
+    right:0;
+}
+.b0{
+    bottom:0;
+}
+.l0{
+    left:0;
+}
+/*width*/
+@each $v in 50, 100, 300, 400, 640, all{
+    .w#{$v} {
+        @if $v==all{
+            width: 100%;
+        }@else{
+            width: #{$v}px;
+        }
+    }
+}
+/*height*/
+@each $v in 50, 100, 200, all{
+    .h#{$v} {
+        @if $v==all{
+            height: 100%;
+        }@else{
+            height: #{$v}px;
+        }
+    }
+}
+/*margin*/
+.ma{
+    margin: auto;
+}
+.mlra{
+    margin-left: auto;
+    margin-right: auto;
+}
+@each $v in 10{
+    .m#{$v} {
+        margin: #{$v}px;
+    }
+    .m#{$v}a {
+        margin: #{$v}px auto;
+    }
+}
+/*mt*/
+@each $v in 10{
+    .mt#{$v} {
+        margin-top: #{$v}px;
+    }
+}
+/*mr*/
+@each $v in 5,10{
+    .mr#{$v} {
+        margin-right: #{$v}px;
+    }
+}
+/*mb*/
+@each $v in 10{
+    .mb#{$v} {
+        margin-bottom: #{$v}px;
+    }
+}
+/*ml*/
+@each $v in 10{
+    .ml#{$v} {
+        margin-left: #{$v}px;
+    }
+}
+/*padding*/
+@each $v in 10{
+    .p#{$v} {
+        padding: #{$v}px;
+    }
+}
+/*pt*/
+@each $v in 10{
+    .pt#{$v} {
+        padding-top: #{$v}px;
+    }
+}
+/*pr*/
+@each $v in 10{
+    .pr#{$v} {
+        padding-right: #{$v}px;
+    }
+}
+/*pb*/
+@each $v in 10{
+    .pb#{$v} {
+        padding-bottom: #{$v}px;
+    }
+}
+/*pl*/
+@each $v in 10{
+    .pl#{$v} {
+        padding-left: #{$v}px;
+    }
+}
+/*line-height*/
+@each $v in 15{
+    .lh#{$v} {
+        padding: #{$v}px;
+    }
+}
+/*vertical-align*/
+.middle{
+    display: table-cell;
+    vertical-align: middle;
+}
+.vt{
+    vertical-align: top;
+}
+.vm{
+    vertical-align: middle;
+}
+.al{
+    text-align: left;
+}
+.ar{
+    text-align: right;
+}
+.ac{
+    text-align: center;
+}
+/*z-index*/
+@each $v in 1,2{
+    .z#{$v} {
+        z-index: #{$v};
+    }
+}
+
+/************************************/
+/* 样式                              */
+/************************************/
+.bold{
+    font-weight: bold;
+}
+.normal{
+    font-weight: normal;
+}
+.wbw{
+    word-wrap: break-word;
+}
+/*font-size*/
+@each $v in 12px,1em{
+    .f#{$v} {
+        font-size: #{$v};
+    }
+}
+.tsd{
+    text-shadow: 1px 1px 1px #000;
+}
+.fwb{
+    font-weight: bold;
+}
+/*underline*/
+.udl{
+    text-decoration: underline;
+}
+/*color*/
+@each $v in "red","black","blue","yellow","pink","white","gray"{
+    @each $d in "pale","middle","deep"{
+        .#{$v}_#{$d} {
+            $vv : color($v);
+            @if $d=="pale"{
+                color: lighten($vv, 30%);
+            }@else if $d=="middle"{
+                color: lighten($vv, 20%);
+            }@else{
+                color: lighten($vv, 0%);
+            }
+        }
+    }
+}
+/*cursor*/
+.cp{
+    cursor : pointer;
+}

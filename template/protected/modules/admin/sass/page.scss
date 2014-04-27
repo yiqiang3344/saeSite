@@ -1,0 +1,30 @@
+.maindiv{
+    position: relative;
+    width:100%;
+}
+
+.maincontent{
+    position: relative;
+    width:100%;
+}
+
+.header{
+    margin-bottom: 20px;
+}
+
+.mblog_edit{
+    .title{
+        margin:10px;
+        .input{
+            width:100%;
+        }
+    }
+    .content{
+        margin:10px;
+        .textarea{
+            width:100%;
+            height: 400px;
+        }
+    }
+
+}

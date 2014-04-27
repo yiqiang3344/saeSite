@@ -1,0 +1,1 @@
+var testTest=new Hogan.Template();testTest.r =function(c,p,i){var _=this;_.b(i=i||"");_.b("<div>子模板 test : ");_.b(_.v(_.f("test",c,p,0)));_.b("</div>");return _.fl();;};

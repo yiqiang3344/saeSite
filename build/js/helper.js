@@ -99,3 +99,17 @@ exports.mkdir = mkdir = function(dirpath, mode, callback) {
       callback();
   });
 };
+
+// 删除目录
+exports.rm = rm = function(path, callback) {
+  if(isFile(path)){
+    fs.unlinkSync(path);
+  }else if(isDir(path)){
+    scanDir(path,false).forEach(function(p){
+      rm(p);
+    });
+    fs.rmdirSync(path);
+  }
+  callback && callback();
+  return true;
+};

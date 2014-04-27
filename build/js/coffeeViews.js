@@ -23,6 +23,7 @@ fs.writeSync(fd, ss);
 fs.closeSync(fd);
 
 //将views中所有coffee文件处理成dev/js/views中的对应js文件
+helper.rm('dev/js/views');
 helper.mkdir('dev/js/views');
 var made_js_map = {};
 helper.scanDir('protected/views').forEach(function(dir){
@@ -31,6 +32,7 @@ helper.scanDir('protected/views').forEach(function(dir){
         return;
     }
     //局部子模板
+    fs.writeFileSync('dev/js/views/'+dirName+'.js', '');
     helper.scanDir(dir).forEach(function(file){
         var 
             basename = helper.baseName(file,true)
@@ -65,6 +67,11 @@ helper.scanDir('protected/views').forEach(function(dir){
 });
 
 function dealFile(file,url){
+    if(!isFile(url)){
+        console.log('coffee fail:'+file);
+        return;
+    }
+    
     var 
         ss = fs.readFileSync(url,'utf8')
     ,   fd = fs.openSync(url, 'w+')

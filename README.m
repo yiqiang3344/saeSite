@@ -11,17 +11,29 @@
     sass 生成css
     bin/phing [-Dbuild.env=config.properties] sass
 
+    sassAdmin 生成admin的css
+    bin/phing [-Dbuild.env=config.properties] sassAdmin
+
     coffee 生成js
     bin/phing [-Dbuild.env=config.properties] coffee
+
+    coffeeAdmin 生成admin的js
+    bin/phing [-Dbuild.env=config.properties] coffeeAdmin
 
     rmAssets 清除暂存文件
     bin/phing [-Dbuild.env=config.properties] rmAssets
 
-    setCssJs 生成css和js并清除assets
+    setCssJs 生成css和js
     bin/phing [-Dbuild.env=config.properties] setCssJs
 
-    coffeeViews 处理views中的coffee生成js并处理所有mustache模板
+    setAdminCssJs 生成admin的css和js并清除assets
+    bin/phing [-Dbuild.env=config.properties] setAdminCssJs
+
+    coffeeViews 执行setCssJs，并处理site的views中的coffee生成js并处理所有mustache模板
     bin/phing [-Dbuild.env=config.properties] coffeeViews
+
+    coffeeAdminViews 执行setAdminCssJs，并处理admin的views中的coffee生成js并处理所有mustache模板
+    bin/phing [-Dbuild.env=config.properties] coffeeAdminViews
 
     cacheCode 处理图片生成url.js缓存号文件给指定css文件中的图片路径加上缓存号
     bin/phing [-Dbuild.env=config.properties] cacheCode
