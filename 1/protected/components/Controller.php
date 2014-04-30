@@ -18,6 +18,8 @@ class Controller extends CController {
      *      CMenu::items}.
      */
     public $menu = array ();
+
+    public $showHeader = true;
     /**
      *
      * @var array the breadcrumbs of the current page. The value of this
@@ -99,11 +101,12 @@ class Controller extends CController {
      * @param string $view Template name
      * @return void
      */
-    public function renderJs( $view='',$data=array()){
-        $this->layout = '//layouts/main_js';
+    public function renderJs( $view='',$data=array(), $layout='//layouts/main_js'){
+        $this->layout = $layout;
         if(is_array($view)) {
             $output =  json_encode($view);
         }else {
+            $this->setHigthligthLangs();
             $output =  parent::render($view,$data,true);
         }
         echo $output;
@@ -166,7 +169,26 @@ class Controller extends CController {
 
     public function getHeaderData($key=false){
         $ret = array(
-            'params' => array(),
+            'params' => array(
+                'logo'=>getUrl('images/logo.jpg'),
+            ),
+            'partials' => array(),
+        );
+        return $key && isset($ret[$key]) ? $ret[$key] : $ret;
+    }
+
+    public function getCategoryData($key=false){
+        $nowBlogCategoryId = getInput('blogCategoryId','int',array('default'=>0));
+        $list = array();
+        foreach(modelsToArray(MBlogCategory::model()->with('blogCount')->findAllByAttributes(array('deleteFlag'=>0),array('order'=>'sort asc,recordTime desc'))) as $row){
+            $row['url'] = getUrl('Blog','Index',array('blogCategoryId'=>$row['blogCategoryId']));
+            $row['on'] = $nowBlogCategoryId==$row['blogCategoryId'];
+            $list[] = $row;
+        }
+        $ret = array(
+            'params' => array(
+                'aList'=>$list
+            ),
             'partials' => array(),
         );
         return $key && isset($ret[$key]) ? $ret[$key] : $ret;
@@ -178,5 +200,41 @@ class Controller extends CController {
             'partials' => array(),
         );
         return $key && isset($ret[$key]) ? $ret[$key] : $ret;
+    }
+
+    public $higthlightContent;
+    public $highlightLangs = array();
+    private function setHigthligthLangs(){
+        if($this->higthlightContent){
+            $langMap = array(
+                'php' => 'Php',
+                'cpp' => 'Cpp',
+                'css' => 'Css',
+                'c#' => 'CSharp',
+                'delphi' => 'Delphi',
+                'java' => 'Java',
+                'js' => 'jScript',
+                'python' => 'Python',
+                'ruby' => 'Ruby',
+                'sql' => 'Sql',
+                'vb' => 'Vb',
+                'xml' => 'Xml',
+                'as3' => 'AS3',
+                'bash' => 'Bash',
+                'delphi' => 'Delphi',
+                'diff' => 'Diff',
+                'erlang' => 'Erlang',
+                'groovy' => 'Groovy',
+                'html' => 'Xml',
+                'jfx' => 'JavaFX',
+                'pl' => 'Perl',
+            );
+            preg_match_all('/<pre\s+class="brush:([^;].*?);/', $this->higthlightContent, $matchs);
+            foreach(array_unique($matchs[1]) as $v){
+                if(isset($langMap[$v])){
+                    $this->highlightLangs[] = $langMap[$v];
+                }
+            }
+        }
     }
 }

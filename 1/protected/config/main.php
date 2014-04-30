@@ -31,6 +31,7 @@ return array(
         'urlManager'=>array(
             'urlFormat'=>'path',
             'showScriptName' => false,
+            'urlSuffix' => '.html',//后缀 
             /*
             'rules'=>array(
                 '<controller:\w+>/<id:\d+>'=>'<controller>/view',

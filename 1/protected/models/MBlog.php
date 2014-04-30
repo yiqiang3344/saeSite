@@ -37,12 +37,19 @@ class MBlog extends YActiveRecord
             'adminBlogIndex'=>array(
                 'select' => 'blogId,blogCategoryId,title,content,recordTime,deleteFlag',
             ),
+            'blogIndex'=>array(
+                'select' => 'blogId,blogCategoryId,title,content,recordTime',
+                'condition' => 't.deleteFlag=0',
+            ),
         );
     }
 
     public function dealScene(){
+        $this->sceneParams['createTime'] = formatTime(getTime() - $this->recordTime,4);
         if($this->scene=='adminBlogIndex'){
-            $this->sceneParams['createTime'] = formatTime(getTime() - $this->recordTime,4);
+
+        }elseif($this->scene=='adminBlogIndex'){
+
         }
     }
 }

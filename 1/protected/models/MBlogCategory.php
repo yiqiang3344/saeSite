@@ -28,7 +28,7 @@ class MBlogCategory extends YActiveRecord
     public function relations()
     {
         return array(
-            'blogCount'=>array(self::STAT, 'MBlog', 'blogCategoryId'),
+            'blogCount'=>array(self::STAT, 'MBlog', 'blogCategoryId', 'condition'=>'deleteFlag=0'),
         );
     }
 

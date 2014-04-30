@@ -10,7 +10,7 @@
         <script type="text/javascript">
             var 
                 BASEURL = <?php echo json_encode(Yii::app()->getBaseUrl());?>
-            ,   BASEURI = <?php echo json_encode(Yii::app()->getBaseUrl() . "/");?>
+            ,   BASEURI = <?php echo json_encode(Yii::app()->getBaseUrl());?>
             ,   LANG    = <?php echo json_encode(Yii::app()->language);?>
             ,   STIME   = <?php echo getTime();?>
             ,   CTIME   = new Date().getTime()
@@ -45,7 +45,9 @@
     <body>
         <div id="maindiv">
             <?php echo $this->Mustache->render($this->publicSubTemplate['headerTemplate'],$this->getHeaderData('params')); ?>
+            <div class="maincontent">
             <?php echo $content;?>
+            </div>
             <?php echo $this->Mustache->render($this->publicSubTemplate['footerTemplate'],$this->getFooterData('params')); ?>
         </div>
         <script type="text/javascript">

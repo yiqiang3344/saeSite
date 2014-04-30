@@ -36,7 +36,9 @@
     <body>
         <div id="maindiv" class="maindiv">
             <div class="header"></div>
+            <div class="maincontent">
             <?php echo $content;?>
+            </div>
             <div class="footer"></div>
         </div>
     </body>
