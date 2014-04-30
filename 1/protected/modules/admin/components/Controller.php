@@ -177,6 +177,11 @@ class Controller extends CController {
                     'name' => '写博客',
                 ),
                 array(
+                    'isSelected' => $this->pageName=='blogCategory_Index',
+                    'url' => $this->url('BlogCategory','Index'),
+                    'name' => '博客分类',
+                ),
+                array(
                     'isSelected' => $this->pageName=='blog_Index',
                     'url' => $this->url('Blog','Index'),
                     'name' => '博客列表',

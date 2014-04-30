@@ -4,7 +4,13 @@
         <li class="clearfix">
             <span class="fl"><a id="js_blog_{{blogId}}">{{title}}</a></span>
             <span class="fr">{{sceneParams.createTime}}</span>
-            <span class="fr ml10"><a id="js_edit_blog_{{blogId}}">编辑</a></span>
+            {{#deleteFlag}}
+            <span class="fr mr10"><a id="js_recover_blog_{{blogId}}">取消删除</a></span>
+            {{/deleteFlag}}
+            {{^deleteFlag}}
+            <span class="fr mr10"><a id="js_delete_blog_{{blogId}}">删除</a></span>
+            {{/deleteFlag}}
+            <span class="fr mr10"><a id="js_edit_blog_{{blogId}}">编辑</a></span>
         </li>
     {{/aList}}
     </ul>

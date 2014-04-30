@@ -56,9 +56,33 @@ class YActiveRecord extends CActiveRecord
         return parent::populateRecord($attributes, $callAfterFind);
     }
 
+    static protected $_with = array();
+    public function with(){
+        static::$_with[get_called_class()] = array();
+        if(func_num_args()>0)
+        {
+            $with=func_get_args();
+            if(is_array($with[0]))  // the parameter is given as an array
+                $with=$with[0];
+            foreach($with as $v){
+                $a = explode(':', $v);
+                static::$_with[get_called_class()][] = $a[0];//兼容有scopes的格式
+            }
+            return parent::with($with);
+        }
+        return $this;
+    }
+
     public function toArray(){
         $attributes = get_object_vars($this);
-        $attributes = array_merge($attributes,$this->attributes);
+        //加上with中的值
+        $relatedList = array();
+        if(isset(static::$_with[get_called_class()])){
+            foreach(static::$_with[get_called_class()] as $v){
+                $relatedList[$v] = $this->getRelated($v);
+            }
+        }
+        $attributes = array_merge($attributes,$this->attributes,$relatedList);
         return $attributes;
     }
 

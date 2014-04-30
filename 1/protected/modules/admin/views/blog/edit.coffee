@@ -14,12 +14,17 @@ window.oPage = oFinalPage.extend
 
             fOneAjax('Blog','AjaxEdit',oFormData,(o)->
                 if(o.code==1)
-                    State.back(0)
+                    # State.back(0)
                 else
                     fShowErrors(o.erros)
             ,@,true);
             false
     __fInitData : ()->
-        
+        params = @.oArgs.oParams
+        #处理被选中的分类
+        $.each(params.blogCategoryList,(k,v)->
+            if v.blogCategoryId==params.blog.blogCategoryId
+                v.selected = true
+        )
 
 

@@ -1,0 +1,22 @@
+<div class="">
+    <div>
+        <form id="blogCategoryForm">
+            <span><input type="text" name="name" placeholder="分类名"/></span>
+            <span><input type="submit" value="添加"/></span>
+        </form>
+    </div>
+    <ul id="blogCategoryList">
+    {{#aList}}
+        <li class="clearfix js_draggable" id="js_blogCategoryId_{{blogCategoryId}}">
+            <span class="fl mr10"><a id="js_blogCategoryName_{{blogCategoryId}}">{{name}}</a></span>
+            <span class="fl"><a id="js_blogIndex_{{blogCategoryId}}">博客数:{{blogCount}}</a></span>
+            {{#deleteFlag}}
+            <span class="fr mr10"><a id="js_recover_{{blogCategoryId}}">取消删除</a></span>
+            {{/deleteFlag}}
+            {{^deleteFlag}}
+            <span class="fr mr10"><a id="js_delete_{{blogCategoryId}}">删除</a></span>
+            {{/deleteFlag}}
+        </li>
+    {{/aList}}
+    </ul>
+</div>

@@ -4,10 +4,19 @@ class BlogController extends Controller{
 
     public function actionIndex() {
         #input
+        $blogCategoryId = getInput('blogCategoryId','int',array('default'=>0));
         #start
+        $condition = '';
+        if($blogCategoryId!==0){
+            $condition = 't.blogCategoryId='.$blogCategoryId;
+        }
 
         $params = array(
-            'aList' => modelsToArray(MBlog::model('blogIndex')->findAll(array('limit'=>20,'order'=>'recordTime desc'))),
+            'aList' => modelsToArray(MBlog::model('adminBlogIndex')->with('blogCategory')->findAll(array(
+                'condition' => $condition,
+                'limit'=>20,
+                'order'=>'t.recordTime desc'
+            ))),
         );
         END:
         $bind = array(
@@ -21,7 +30,7 @@ class BlogController extends Controller{
         $id = getInput('id','int');
         #start
 
-        $params = MBlog::model('blogIndex')->findByPk($id)->toArray();
+        $params = MBlog::model('adminBlogIndex')->with('blogCategory')->findByPk($id)->toArray();
         $this->higthlightContent = $params['content'];
         $this->layout = 'main_blog';
         END:
@@ -36,6 +45,7 @@ class BlogController extends Controller{
         #start
 
         $params = array(
+            'blogCategoryList' => modelsToArray(MBlogCategory::model()->findAllByAttributes(array('deleteFlag'=>0),array('order'=>'recordTime desc')))
         );
         END:
         $bind = array(
@@ -50,7 +60,8 @@ class BlogController extends Controller{
         #start
 
         $params = array(
-            'blog' => MBlog::model('blogIndex')->findByPk($id)->toArray()
+            'blog' => MBlog::model('adminBlogIndex')->with('blogCategory')->findByPk($id)->toArray(),
+            'blogCategoryList' => modelsToArray(MBlogCategory::model()->findAllByAttributes(array('deleteFlag'=>0),array('order'=>'t.sort asc,t.recordTime desc')))
         );
         END:
         $bind = array(
@@ -84,14 +95,50 @@ class BlogController extends Controller{
     public function actionAjaxEdit(){
         #input
         $id = getInput('id','int');
+        $blogCategoryId = getInput('blogCategoryId','int');
         $title = getInput('title','str',array('length'=>array('min'=>1,'max'=>'128')));
         $content = getInput('content','str',array('length'=>array('min'=>1)));
         #start
         $code = 1;
 
         MBlog::model()->updateByPk($id,array(
+            'blogCategoryId'=>$blogCategoryId,
             'title'=>$title,
             'content'=>$content
+        ));
+
+        END:
+        $bind = array(
+            'code' => $code,
+        );
+        $this->render($bind);
+    }
+
+    public function actionAjaxDelete(){
+        #input
+        $id = getInput('id','int');
+        #start
+        $code = 1;
+
+        MBlog::model()->updateByPk($id,array(
+            'deleteFlag' => 1
+        ));
+
+        END:
+        $bind = array(
+            'code' => $code,
+        );
+        $this->render($bind);
+    }
+
+    public function actionAjaxRecover(){
+        #input
+        $id = getInput('id','int');
+        #start
+        $code = 1;
+
+        MBlog::model()->updateByPk($id,array(
+            'deleteFlag' => 0
         ));
 
         END:
