@@ -17,6 +17,6 @@ class MainController extends Controller
     }
 
     public function actionTest(){
-        echo getUrl('js/views/'.$this->getId().'/'.$this->getAction()->id.'.js');
+        echo getUrl('js/views/'.$this->getId().'/'.$this->getActionId().'.js');
     }
 }

@@ -1,0 +1,13 @@
+<div class="">
+    <p class="mb1">博客列表</p>
+    <ul>
+    {{#aList}}
+        <li class="clearfix">
+            <a id="js_blog_{{blogId}}">
+                <span class="fl">{{title}}</span>
+            </a>
+            <span class="fr">{{sceneParams.createTime}}</span>
+        </li>
+    {{/aList}}
+    </ul>
+</div>

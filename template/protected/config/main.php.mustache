@@ -21,6 +21,8 @@ return array(
         'admin',
     ),
 
+    'defaultController' => 'main',
+
     // application components
     'components'=>array(
         'user'=>array(
@@ -31,6 +33,7 @@ return array(
         'urlManager'=>array(
             'urlFormat'=>'path',
             'showScriptName' => false,
+            'urlSuffix' => '.html',//后缀 
             /*
             'rules'=>array(
                 '<controller:\w+>/<id:\d+>'=>'<controller>/view',

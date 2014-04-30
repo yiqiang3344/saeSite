@@ -1,1 +1,1 @@
-var URLCACHE={"images":{"logo.png":"209edfa8"}};
+var URLCACHE={"images":{"logo.jpg":"40631e6d"}};

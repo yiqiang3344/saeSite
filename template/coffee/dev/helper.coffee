@@ -5,7 +5,6 @@ window.oFinalPage = Class.extend
     __fInitData : ()->
 
     fPrint : ()->
-        document.write('<div class="maincontent"></div>')
         @fRefresh()
     fRefresh : (bRefresh)->
         bRefresh = bRefresh ? false;

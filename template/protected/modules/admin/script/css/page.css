@@ -9,9 +9,9 @@
 .header {
   margin-bottom: 20px; }
 
-.mblog_edit .title {
+.mblog_edit .info {
   margin: 10px; }
-.mblog_edit .title .input {
+.mblog_edit .info .title {
   width: 100%; }
 .mblog_edit .content {
   margin: 10px; }

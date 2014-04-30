@@ -10,13 +10,17 @@
         <script type="text/javascript">
             var 
                 BASEURL = <?php echo json_encode(Yii::app()->getBaseUrl());?>
-            ,   BASEURI = <?php echo json_encode(Yii::app()->getBaseUrl() . "/");?>
+            ,   BASEURI = <?php echo json_encode(Yii::app()->getBaseUrl());?>
             ,   LANG    = <?php echo json_encode(Yii::app()->language);?>
             ,   STIME   = <?php echo getTime();?>
             ,   CTIME   = new Date().getTime()
-            ,   TEST    = <?php echo YII_DEBUG;?>
-            ,   HEADER  = <?php echo $this->getHeaderData();?>
-            ,   FOOTER  = <?php echo $this->getFooterData();?>
+            ,   TEST    = <?php echo json_encode(YII_DEBUG);?>
+            ,   SHOW_HEADER  = <?php echo json_encode($this->showHeader);?>
+            ,   HEADER  = <?php echo json_encode($this->getHeaderData());?>
+            ,   CATEGORY  = <?php echo json_encode($this->getCategoryData());?>
+            ,   FOOTER  = <?php echo json_encode($this->getFooterData());?>
+            ,   EMPTY_LAYOUT  =  false
+            ,   SYN_HIGHLIGHT  =  <?php echo json_encode(count($this->highlightLangs) ? true : false);?>
             ;
         </script>
         <?php if(Yii::app()->language=='dev'):?>
@@ -28,25 +32,25 @@
         <?php endif;?>
         <script type="text/javascript" src="<?php echo getUrl('js/helper.js');?>"></script>
         <script type="text/javascript" src="<?php echo getUrl('js/views/'.$this->getId().'.js');?>"></script>
+        <?php if(count($this->highlightLangs)>0):?>
+        <link type="text/css" rel="stylesheet" href="<?php echo getUrl('css/shCore.css');?>"></link>
+        <link type="text/css" rel="stylesheet" href="<?php echo getUrl('css/shThemeDefault.css');?>"></link>
+        <script type="text/javascript" src="<?php echo getUrl('js/highlighter/shCore.js');?>"></script>
+        <script type="text/javascript" src="<?php echo getUrl('js/highlighter/shAutoloader.js');?>"></script>
+        <?php foreach($this->highlightLangs as $v):?>
+        <script type="text/javascript" src="<?php echo getUrl('js/highlighter/shBrush'.$v.'.js');?>"></script>
+        <?php endforeach;?>
+        <?php endif;?>
     </head>
     <body>
         <div id="maindiv">
             <div class="header"></div>
+            <div class="category"></div>
+            <div class="maincontent">
             <?php echo $content;?>
+            </div>
             <div class="footer"></div>
         </div>
-        <script type="text/javascript">
-            $('.header').replaceWith(headerTemplate.render(HEADER.params,HEADER.partials));
-            $('.footer').replaceWith(footerTemplate.render(FOOTER.params,FOOTER.partials));
-            $('.js_logout').click(function() {
-                fOneAjax('Site', 'AjaxLogout', {}, function(obj) {
-                    if (obj.code === 1) {
-                        State.back(0);
-                    }
-                }, this);
-                return false;
-            });
-        </script>
     </body>
 </html>
 

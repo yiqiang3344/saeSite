@@ -9,7 +9,7 @@ class MBlog extends YActiveRecord
     public function rules()
     {
         return array(
-            array('title, content', 'required'),
+            array('blogCategoryId, title, content', 'required'),
             array('deleteFlag', 'safe'),
         );
     }
@@ -27,23 +27,29 @@ class MBlog extends YActiveRecord
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
+            'blogCategory'=>array(self::HAS_ONE, 'MBlogCategory', array('blogCategoryId'=>'blogCategoryId')),
         );
     }
 
     public function scopes(){
         return array(
+            'adminBlogIndex'=>array(
+                'select' => 'blogId,blogCategoryId,title,content,recordTime,deleteFlag',
+            ),
             'blogIndex'=>array(
-                'select' => 'blogId,title,content,recordTime',
+                'select' => 'blogId,blogCategoryId,title,content,recordTime',
+                'condition' => 't.deleteFlag=0',
             ),
         );
     }
 
     public function dealScene(){
-        if($this->scene=='blogIndex'){
-            $this->sceneParams['createTime'] = formatTime($this->recordTime-getTime(),4);
+        $this->sceneParams['createTime'] = formatTime(getTime() - $this->recordTime,4);
+        if($this->scene=='adminBlogIndex'){
+
+        }elseif($this->scene=='adminBlogIndex'){
+
         }
     }
 }

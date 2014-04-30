@@ -14,7 +14,7 @@
             ,   LANG    = <?php echo json_encode(Yii::app()->language);?>
             ,   STIME   = <?php echo getTime();?>
             ,   CTIME   = new Date().getTime()
-            ,   TEST    = <?php echo YII_DEBUG;?>
+            ,   TEST    = <?php echo json_encode(YII_DEBUG);?>
             ,   SHOW_HEADER  = <?php echo json_encode($this->showHeader);?>
             ,   HEADER  = <?php echo json_encode($this->getHeaderData());?>
             ,   CATEGORY  = <?php echo json_encode($this->getCategoryData());?>

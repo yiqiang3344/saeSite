@@ -213,7 +213,7 @@ class Controller extends CController {
                 'c#' => 'CSharp',
                 'delphi' => 'Delphi',
                 'java' => 'Java',
-                'js' => 'jScript',
+                'js' => 'JScript',
                 'python' => 'Python',
                 'ruby' => 'Ruby',
                 'sql' => 'Sql',
@@ -236,5 +236,13 @@ class Controller extends CController {
                 }
             }
         }
+    }
+
+    public function getId(){
+        return lcfirst(parent::getId());
+    }
+
+    public function getActionId(){
+        return lcfirst($this->getAction()->id);
     }
 }

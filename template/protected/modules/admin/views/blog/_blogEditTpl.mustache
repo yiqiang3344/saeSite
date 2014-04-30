@@ -1,7 +1,15 @@
 <div class="mblog_edit js_blog_edit">
     <form id="js_form_blog">
-        <div class="title">
-            <input class="input js_title" name="title" type="text" value="{{blog.title}}" placeholder="标题">
+        <div class="info">
+            <input class="title js_title" name="title" type="text" value="{{blog.title}}" placeholder="标题">
+            <span class="category">
+                分类:
+                <select class="js_blogCategoryId" name="blogCategoryId">
+                    {{#blogCategoryList}}
+                    <option value="{{blogCategoryId}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+                    {{/blogCategoryList}}
+                </select>
+            </span>
         </div>
         <div class="content">
             <textarea class="textarea js_content" name="content" id="blog_content">{{blog.content}}</textarea>

@@ -230,7 +230,6 @@
     },
     __fInitData: function() {},
     fPrint: function() {
-      document.write('<div class="maincontent"></div>');
       return this.fRefresh();
     },
     fRefresh: function(bRefresh) {

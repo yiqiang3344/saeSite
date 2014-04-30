@@ -1,3 +1,31 @@
+$(()->
+    if(SYN_HIGHLIGHT)
+        SyntaxHighlighter.all()
+
+    SHOW_HEADER && fShowHeader()
+
+    fShowFooter()
+
+    fShowCategory()
+
+    $('.js_logout').click(()->
+        fOneAjax('Site', 'AjaxLogout', {}, (o)->
+            if o.code == 1
+                State.back(0);
+        , @)
+        false
+    )
+)
+
+window.fShowHeader = ()->
+    $('.header').replaceWith(headerTemplate.render(HEADER.params,HEADER.partials))
+
+window.fShowCategory = ()->
+    $('.category').replaceWith(categoryTemplate.render(CATEGORY.params,CATEGORY.partials))
+
+window.fShowFooter = ()->
+    $('.footer').replaceWith(footerTemplate.render(FOOTER.params,FOOTER.partials))
+
 # ###
 # Pager
 # @param {object} dom : jquery selector,where to insert html
@@ -78,29 +106,30 @@ window.fGetTime = ->
 # @param {object} p params
 # ###
 window.fGetUrl = (c, a, p) ->
-  if a is `undefined`
-    pieces = c.split("/")
-    arr = URLCACHE
-    i = 0
-    while i < pieces.length
-      arr = arr[pieces[i]]  if arr[pieces[i]]
-      i++
-    BASEURL + "/" + c + "?v=" + arr
-  else
-    url = undefined
-    param = undefined
-    if typeof (a) is "string"
-      url = BASEURI + "/" + c + "/" + a
-      param = p
+    if a is `undefined`
+        pieces = c.split("/")
+        arr = URLCACHE
+        i = 0
+        while i < pieces.length
+              arr = arr[pieces[i]]  if arr[pieces[i]]
+              i++
+        BASEURL + "/" + c + "?v=" + arr
     else
-      url = BASEURI + "/" + c
-      param = a
-    if param
-      l = []
-      for k of param
-        l.push encodeURIComponent(k) + "=" + encodeURIComponent(param[k]) if param[k]?
-      l.length > 0 and (url += "?" + l.join("&"))
-    url
+        url = undefined
+        param = undefined
+        if typeof (a) is "string"
+            url = BASEURI + "/" + c + "/" + a
+            param = p
+        else
+            url = BASEURI + "/" + c
+            param = a
+        if param
+            l = []
+            for k of param
+                l.push encodeURIComponent(k) + "=" + encodeURIComponent(param[k]) if param[k]?
+            url += '.html'
+            l.length > 0 and (url += "?" + l.join("&"))
+        url
 
 # ###
 # @param {time} time

@@ -12,6 +12,22 @@ window.oPage = oFinalPage.extend
             State.forward('Blog', 'Edit', {id : id})
             false
 
+        $('[id^=js_delete_blog_]').click ()->
+            id = this.id.replace('js_delete_blog_','')
+            fOneAjax('Blog', 'AjaxDelete', {id : id}, (o)->
+                if(o.code==1)
+                    State.back(0)
+            , @);
+            false
+
+        $('[id^=js_recover_blog_]').click ()->
+            id = this.id.replace('js_recover_blog_','')
+            fOneAjax('Blog', 'AjaxRecover', {id : id}, (o)->
+                if(o.code==1)
+                    State.back(0)
+            , @);
+            false
+
     __fInitData : ()->
         
 

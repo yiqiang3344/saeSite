@@ -32,7 +32,6 @@ class BlogController extends Controller{
 
         $params = MBlog::model('adminBlogIndex')->with('blogCategory')->findByPk($id)->toArray();
         $this->higthlightContent = $params['content'];
-        $this->layout = 'main_blog';
         END:
         $bind = array(
             'params' => $params,

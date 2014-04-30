@@ -23,6 +23,9 @@ class AdminModule extends CWebModule
                 'class' => 'CWebUser',
                 'allowAutoLogin'=>true,
             ),
+            'urlManager'=>array(
+                'urlSuffix' => '',//取消后缀 
+            ),
         ));
     }
 

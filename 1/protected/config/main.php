@@ -21,6 +21,8 @@ return array(
         'admin',
     ),
 
+    'defaultController' => 'main',
+
     // application components
     'components'=>array(
         'user'=>array(

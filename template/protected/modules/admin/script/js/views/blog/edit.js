@@ -19,7 +19,7 @@ var oTemplate=new Hogan.Template();oTemplate.r =function(c,p,i){var _=this;_.b(i
         oFormData.append('content', oContent.getContent());
         fOneAjax('Blog', 'AjaxEdit', oFormData, function(o) {
           if (o.code === 1) {
-            return State.back(0);
+
           } else {
             return fShowErrors(o.erros);
           }
@@ -27,7 +27,15 @@ var oTemplate=new Hogan.Template();oTemplate.r =function(c,p,i){var _=this;_.b(i
         return false;
       });
     },
-    __fInitData: function() {}
+    __fInitData: function() {
+      var params;
+      params = this.oArgs.oParams;
+      return $.each(params.blogCategoryList, function(k, v) {
+        if (v.blogCategoryId === params.blog.blogCategoryId) {
+          return v.selected = true;
+        }
+      });
+    }
   });
 
 }).call(this);

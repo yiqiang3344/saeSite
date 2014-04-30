@@ -14,7 +14,7 @@
             ,   LANG    = <?php echo json_encode(Yii::app()->language);?>
             ,   STIME   = <?php echo getTime();?>
             ,   CTIME   = new Date().getTime()
-            ,   TEST    = <?php echo YII_DEBUG;?>
+            ,   TEST    = <?php echo json_encode(YII_DEBUG);?>
             ;
         </script>
         <?php if(Yii::app()->language=='dev'):?>

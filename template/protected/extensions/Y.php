@@ -59,17 +59,18 @@ function getUrl($c,$a=null,$p=array()){
         foreach($p as $k=>$v){
             $l[] = urlencode ( $k ) . "=" . urlencode ( $v );
         }
+        $ret .= '.html';
         $p && ($ret .= '?'.implode('&', $l));
     }else{
         //非开发环境中的css和js都是压缩过的,开发环境中则不压缩
         if(Yii::app()->language=='dev'){
-            if(!preg_match('{^(js/(jquery|tools|main|url)\.|css|img|images)}',$c)){
+            if(!preg_match('{^(js/(jquery|tools|main|url|highlighter)|css|img|images)}',$c)){
                 //开发语言中需要翻译的
                 $c = Yii::app()->language.'/'.$c;
             }
         }else{
             $min_name = str_replace(array('.js','.css'),array('.min.js','.min.css'),$c);
-            if(preg_match('{^(js/(jquery|all)\.|css)}',$c)){
+            if(preg_match('{^(js/(jquery|all|highlighter)|css)}',$c)){
                 //非开发语言中不需要翻译的
                 $c = 'script/'.basename($min_name);
             }elseif(preg_match('{^js}',$c)){

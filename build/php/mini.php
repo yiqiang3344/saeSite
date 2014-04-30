@@ -5,51 +5,51 @@ $lang_list = array(
 $dirs = array(
 );
 $langDirs = array(
-  'js',
+    'js',
 );
 //需要合并的js列表
 $combineJsList = array(
 );
 $list = array();
 foreach($dirs as $dir){
-  $list = array_merge($list,yscanDir($dir));
+    $list = array_merge($list,yscanDir($dir));
 }
 foreach($lang_list as $lang){
-  foreach($langDirs as $dir){
-    $list = array_merge($list,yscanDir($lang.'/'.$dir));
-  }
+    foreach($langDirs as $dir){
+        $list = array_merge($list,yscanDir($lang.'/'.$dir));
+    }
 }
 //压缩文件都放到script目录下
 is_dir('script') || mkdir('script');
 //删除当前压缩文件
 foreach(yscanDir('script') as $f){
-  is_file($f) && unlink($f);
+    is_file($f) && unlink($f);
 }
 
 foreach($list as $file){
-  $delFlag = false;
-  if(preg_match('{^css|^js}', $file)){
-    $filename = 'script/'.basename($file);
-  }else{
-    $filename = $file;
-    $delFlag = true;
-  }
-  
-  if(preg_match('{\.min\.js$|\.min\.css$}', $filename)){
-      continue;//压缩过的不处理
-  }elseif(preg_match('{\.js$}', $filename)){
-    if(in_array(basename($file),$combineJsList)){
-      $hd = fopen('script/all.min.js','a');
+    $delFlag = false;
+    if(preg_match('{^css|^js}', $file)){
+        $filename = 'script/'.basename($file);
     }else{
-      $hd = fopen(str_replace('.js','.min.js',$filename),'w');
+        $filename = $file;
+        $delFlag = true;
     }
-    fwrite($hd, JSMin::minify(file_get_contents($file)));
-    fclose($hd);
-  }elseif(preg_match('{\.css$}', $filename)){
-    $hd = fopen(str_replace('.css','.min.css',$filename),'w');
-    fwrite($hd, compressCss(file_get_contents($file)));
-    fclose($hd);
-  }
-  $delFlag && unlink($filename);
+    
+    if(preg_match('{\.min\.js$|\.min\.css$}', $filename)){
+            continue;//压缩过的不处理
+    }elseif(preg_match('{\.js$}', $filename)){
+        if(preg_match('{^js}', $file) && in_array(basename($file),$combineJsList)){
+            $hd = fopen('script/all.min.js','a');
+        }else{
+            $hd = fopen(str_replace('.js','.min.js',$filename),'w');
+        }
+        fwrite($hd, JSMin::minify(file_get_contents($file)));
+        fclose($hd);
+    }elseif(preg_match('{\.css$}', $filename)){
+        $hd = fopen(str_replace('.css','.min.css',$filename),'w');
+        fwrite($hd, compressCss(file_get_contents($file)));
+        fclose($hd);
+    }
+    $delFlag && unlink($filename);
 }
 echo 'already compressed all js and css.';

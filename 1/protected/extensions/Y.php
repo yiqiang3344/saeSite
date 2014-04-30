@@ -70,7 +70,7 @@ function getUrl($c,$a=null,$p=array()){
             }
         }else{
             $min_name = str_replace(array('.js','.css'),array('.min.js','.min.css'),$c);
-            if(preg_match('{^(js/(jquery|all)\.|css)}',$c)){
+            if(preg_match('{^(js/(jquery|all|highlighter)|css)}',$c)){
                 //非开发语言中不需要翻译的
                 $c = 'script/'.basename($min_name);
             }elseif(preg_match('{^js}',$c)){

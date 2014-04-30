@@ -204,4 +204,12 @@ class Controller extends CController {
         );
         return $ret;
     }
+
+    public function getId(){
+        return lcfirst(parent::getId());
+    }
+
+    public function getActionId(){
+        return lcfirst($this->getAction()->id);
+    }
 }
