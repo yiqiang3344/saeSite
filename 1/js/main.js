@@ -7,7 +7,7 @@
     SHOW_HEADER && fShowHeader();
     fShowFooter();
     fShowCategory();
-    return $('.js_logout').click(function() {
+    $('.js_logout').click(function() {
       fOneAjax('Site', 'AjaxLogout', {}, function(o) {
         if (o.code === 1) {
           return State.back(0);
@@ -15,6 +15,11 @@
       }, this);
       return false;
     });
+    $('.js_to_home').click(function() {
+      State.forward('Main', 'Index');
+      return false;
+    });
+    return false;
   });
 
   window.fShowHeader = function() {

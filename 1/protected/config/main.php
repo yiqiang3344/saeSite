@@ -65,8 +65,8 @@ return array(
             'class' => 'CDbConnection',
             'connectionString' => 'mysql:host=127.0.0.1;dbname=yiisae1',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'yjq',
+            'username' => 'yiisae1',
+            'password' => 'yiisae1',
             'charset' => 'utf8',
         ),
 

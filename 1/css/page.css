@@ -10,11 +10,8 @@
   height: 8%; }
 .header .logo {
   width: 35.82%; }
-.header .logo .name {
-  float: right;
-  line-height: 1.2em;
-  font-size: 4em; }
 .header .logo .img {
+  cursor: pointer;
   float: right;
   height: 5em; }
 

@@ -14,7 +14,7 @@ window.oPage = oFinalPage.extend
 
             fOneAjax('Blog','AjaxEdit',oFormData,(o)->
                 if(o.code==1)
-                    # State.back(0)
+                    State.back(0)
                 else
                     fShowErrors(o.erros)
             ,@,true);

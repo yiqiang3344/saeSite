@@ -1,0 +1,10 @@
+<div class="category">
+    <p class="mb1">博客分类</p>
+    <ul>
+    {{#aList}}
+        <li class="{{#on}}on{{/on}}">
+            <a href="{{url}}">{{name}}({{blogCount}})</a>
+        </li>
+    {{/aList}}
+    </ul>
+</div>

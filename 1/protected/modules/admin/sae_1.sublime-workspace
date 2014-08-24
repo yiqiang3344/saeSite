@@ -460,11 +460,14 @@
 	},
 	"file_history":
 	[
+		"/Library/WebServer/www/webroot/sae/2/protected/components/Controller.php",
+		"/Library/WebServer/www/webroot/sae/2/protected/views/_public/categoryTemplate.mustache",
+		"/Library/WebServer/www/webroot/sae/2/protected/views/main/index.mustache",
+		"/Library/WebServer/www/webroot/sae/2/protected/config/main.php",
 		"/Library/WebServer/www/webroot/saeSite/1/protected/modules/admin/AdminModule.php",
 		"/Library/WebServer/www/webroot/saeSite/1/protected/components/Controller.php",
 		"/Library/WebServer/www/webroot/sae/2/protected/modules/admin/AdminModule.php",
 		"/Library/WebServer/www/webroot/sae/2/protected/modules/admin/components/Controller.php",
-		"/Library/WebServer/www/webroot/sae/2/protected/components/Controller.php",
 		"/Library/WebServer/www/webroot/saeSite/1/protected/controllers/MainController.php",
 		"/Library/WebServer/www/webroot/saeSite/1/protected/modules/admin/views/blog/add.php",
 		"/Library/WebServer/www/webroot/saeSite/1/protected/modules/admin/views/blog/blog.php",
@@ -509,7 +512,6 @@
 		"/Library/WebServer/www/webroot/sae/2/protected/views/blog/index.php",
 		"/Library/WebServer/www/webroot/sae/2/framework/sae/caching/CMemCache.php",
 		"/Library/WebServer/www/webroot/sae/2/index.php",
-		"/Library/WebServer/www/webroot/sae/2/protected/config/main.php",
 		"/Library/WebServer/www/webroot/sae/2/protected/views/layouts/main_php.php",
 		"/Library/WebServer/www/webroot/sae/2/protected/views/layouts/template_for_js.php",
 		"/Library/WebServer/www/webroot/sae/2/protected/views/layouts/zh_cn/main_js.php",
@@ -585,9 +587,7 @@
 		"/Library/WebServer/www/webroot/site1/protected/controllers/CompanyController.php",
 		"/Library/WebServer/www/webroot/site_path/protected/controllers/CompanyController.php",
 		"/Library/WebServer/www/webroot/site_path/protected/views/company/go.php",
-		"/Library/WebServer/www/webroot/product/protected/modules/admin/template/main/comment-list.php",
-		"/Users/sidney/Nutstore/document/FW.c",
-		"/Users/sidney/Nutstore/document/test.js"
+		"/Library/WebServer/www/webroot/product/protected/modules/admin/template/main/comment-list.php"
 	],
 	"find":
 	{
@@ -869,6 +869,14 @@
 		"selected_items":
 		[
 			[
+				"procontro",
+				"protected/components/Controller.php"
+			],
+			[
+				"configmain",
+				"protected/config/main.php"
+			],
+			[
 				"site1y.php",
 				"webroot/site1/protected/extensions/Y.php"
 			],
@@ -1059,10 +1067,6 @@
 			[
 				"site1controller",
 				"webroot/site1/protected/components/Controller.php"
-			],
-			[
-				"procontro",
-				"webroot/product/protected/components/Controller.php"
 			],
 			[
 				"sitepage.scss",
@@ -1375,10 +1379,6 @@
 			[
 				"skill10001",
 				"webroot/tank-svn/shared/lua/skill10001.lua"
-			],
-			[
-				"hpchangeaction",
-				"webroot/tank-svn/shared/lua/hpchangeaction.lua"
 			]
 		],
 		"width": 0.0

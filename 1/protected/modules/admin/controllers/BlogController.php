@@ -74,12 +74,14 @@ class BlogController extends Controller{
     public function actionAjaxAdd(){
         #input
         $title = getInput('title','str',array('length'=>array('min'=>1,'max'=>'128')));
+        $blogCategoryId = getInput('blogCategoryId','int');
         $content = getInput('content','str',array('length'=>array('min'=>1)));
         #start
         $code = 1;
 
 
         list($code,$errors) = MBlog::model()->create(array(
+            'blogCategoryId'=>$blogCategoryId,
             'title'=>$title,
             'content'=>$content,
         ));

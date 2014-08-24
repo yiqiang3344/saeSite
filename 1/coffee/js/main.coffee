@@ -11,10 +11,16 @@ $(()->
     $('.js_logout').click(()->
         fOneAjax('Site', 'AjaxLogout', {}, (o)->
             if o.code == 1
-                State.back(0);
+                State.back(0)
         , @)
         false
     )
+
+    $('.js_to_home').click(()->
+        State.forward('Main','Index')
+        false
+    )
+    false
 )
 
 window.fShowHeader = ()->

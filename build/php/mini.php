@@ -1,14 +1,20 @@
 <?php
 require('helper.php');
 $lang_list = array(
+        'zh_cn',
 );
 $dirs = array(
+    'css',
+    'js',
 );
 $langDirs = array(
     'js',
 );
 //需要合并的js列表
 $combineJsList = array(
+    'tools.js',
+    'main.js',
+    'url.js',
 );
 $list = array();
 foreach($dirs as $dir){

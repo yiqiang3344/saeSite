@@ -2,6 +2,7 @@ var hogan = require('hogan.js');
 var fs = require('fs');
 var helper = require('./helper');
 var langList = [
+        'zh_cn',
     ];
 
 //找到views/_public所有文件，编译之后追加到(lang)/js/helper.min.js文件中

@@ -6,7 +6,10 @@ class MainController extends Controller
 
         #start
         $params = array(
-            'test' => 'test',
+            'blogList' => modelsToArray(MBlog::model('blogIndex')->with('blogCategory')->findAll(array(
+                'limit'=>20,
+                'order'=>'t.recordTime desc'
+            )))
         );
 
         END:

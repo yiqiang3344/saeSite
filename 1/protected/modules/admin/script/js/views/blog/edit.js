@@ -19,7 +19,7 @@ var oTemplate=new Hogan.Template();oTemplate.r =function(c,p,i){var _=this;_.b(i
         oFormData.append('content', oContent.getContent());
         fOneAjax('Blog', 'AjaxEdit', oFormData, function(o) {
           if (o.code === 1) {
-
+            return State.back(0);
           } else {
             return fShowErrors(o.erros);
           }
