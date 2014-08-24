@@ -47,7 +47,7 @@ class MainController extends Controller
         if(in_array($type, array('md5','base64_encode','base64_decode','addslashes','stripslashes','htmlentities','html_entity_decode','json_encode','json_decode'))){
             if($type=='json_decode'){
                 $ret = $type($source,true);
-                $ret = print_r($ret,true);
+                $ret = var_export($ret,true);
             }elseif($type=='json_encode'){
                 list($arr) = strToArr($source);
                 $ret = $type($arr);

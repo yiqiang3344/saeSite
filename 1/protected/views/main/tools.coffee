@@ -34,8 +34,8 @@ window.oPage = oFinalPage.extend
             ,@)
         $('#encrypt').click ()->
             type = $('#encrypt_type').val()
-            ret
-            if type in {md5:1,base64_encode:1,base64_decode:1,addslashes:1,stripslashes:1,htmlentities:1,html_entity_decode:1,json_encode:1,json_decode:1}
+            ret = ''
+            if type in ['md5','base64_encode','base64_decode','addslashes','stripslashes','htmlentities','html_entity_decode','json_encode','json_decode']
                 fOneAjax('Main','AjaxEncrypt',{type:type,source:source.val()},(obj)->
                     if obj.code==1
                         output_html.hide()
@@ -47,9 +47,9 @@ window.oPage = oFinalPage.extend
                 else if type=='jsdecodeuri'
                     ret = decodeURI(source.val())
                 else if type=='jsencodeuricomponent'
-                    ret = decodeURIComponent(source.val())
-                else if type=='jsdecodeuricomponent'
                     ret = encodeURIComponent(source.val())
+                else if type=='jsdecodeuricomponent'
+                    ret = decodeURIComponent(source.val())
                 output_html.hide()
                 output.show().val(ret)
         $('#swap').click ()->

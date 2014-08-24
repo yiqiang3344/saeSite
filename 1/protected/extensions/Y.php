@@ -494,6 +494,14 @@ class SSerialize{
     }
 }
 
+//排除转义的符号
+function noEscapeStrPos($string,$find,$start){
+    if(($pos = strpos($string,$find,$start)) !== false  && substr($string, $pos-1,1)=='\\'){
+        $func = __METHOD__;
+        $pos = $func($string, $find, $pos+strlen($find));
+    }
+    return $pos;
+}
 
 function strToArr($str){
     $pushByKey = function($str,$s_pos,$i,&$arr,&$key,$v=false){
