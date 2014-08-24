@@ -7,10 +7,6 @@ function setCacheCode(){
     $arr=array();   
     //处理指定目录
     $dirs = array(
-        'img',
-        'images',
-        'upload',
-        'upload1',
     );
     foreach($dirs as $d){
         $adir = $d;
@@ -30,7 +26,6 @@ function setCacheCode(){
     //处理CSS文件给图片加MD5后缀
     $rep=new ReplaceCss('./css');
     $cssFiles  = array(
-        'page.css',
     );
     foreach($cssFiles as $css){
         $file='css/'.$css;

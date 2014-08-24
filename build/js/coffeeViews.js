@@ -4,7 +4,6 @@ var
 ,   helper = require('./helper')
 ,   process = require('child_process')
 ,   langList = [
-        'zh_cn',
     ]
 ;
 

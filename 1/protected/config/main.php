@@ -8,7 +8,7 @@ $import = require_once(dirname(__FILE__).'/import.cfg.php');
 // CWebApplication properties can be configured here.
 return array(
     'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-    'name'=>'site1 of yiisae',
+    'name'=>'sidney的空间',
     'language' => 'dev',
 
     // preloading 'log' component
