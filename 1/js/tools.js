@@ -599,3 +599,4 @@ var Hogan = {};
     return this.cache[key] = t;
   };
 })(typeof exports !== 'undefined' ? exports : Hogan);
+

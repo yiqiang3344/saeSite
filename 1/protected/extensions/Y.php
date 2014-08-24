@@ -64,13 +64,13 @@ function getUrl($c,$a=null,$p=array()){
     }else{
         //非开发环境中的css和js都是压缩过的,开发环境中则不压缩
         if(Yii::app()->language=='dev'){
-            if(!preg_match('{^(js/(jquery|tools|main|url|highlighter)|css|img|images)}',$c)){
+            if(!preg_match('{^(js/(jquery|tools|main|url|highlighter|jsBeautify)|css|img|images)}',$c)){
                 //开发语言中需要翻译的
                 $c = Yii::app()->language.'/'.$c;
             }
         }else{
             $min_name = str_replace(array('.js','.css'),array('.min.js','.min.css'),$c);
-            if(preg_match('{^(js/(jquery|all|highlighter)|css)}',$c)){
+            if(preg_match('{^(js/(jquery|all|highlighter|jsBeautify)|css)}',$c)){
                 //非开发语言中不需要翻译的
                 $c = 'script/'.basename($min_name);
             }elseif(preg_match('{^js}',$c)){
@@ -491,5 +491,504 @@ class SSerialize{
             throwException('SSerialize error,illegal farmat.');
         }
         return $ret;
+    }
+}
+
+
+function strToArr($str){
+    $pushByKey = function($str,$s_pos,$i,&$arr,&$key,$v=false){
+        $v = $v?$v:substr($str, $s_pos, $i-$s_pos);
+        if(is_string($v) && (strpos($v,'\'')===0 || strpos($v,'"')===0)){
+            $v = substr($v, 1, strlen($v)-2);
+        }
+        if($key){
+            if(strpos($key,'\'')===0 || strpos($key,'"')===0){
+                $key = substr($key, 1, strlen($key)-2);
+            }
+            $arr[$key] = $v;
+            $key = false;
+        }else{
+            $arr[] = $v;
+        }
+    };
+
+    $str = str_replace(array("\n","\r\n","\t"," "), '', $str);
+    $ass = 'array(';
+    if(strpos($str,$ass)!==0){
+        return array(null);//非数组则返回空值
+    }
+    $arr = array();
+    $key = false;
+    $s_pos = strlen($ass);
+    for($i=$s_pos,$c=strlen($str);$i<$c;$i++){
+        if($str[$i]=='"'){
+            if(($i=noEscapeStrPos($str,'"',$i+1)) === false){
+                break;
+            }
+        }elseif($str[$i]=='\''){
+            if(($i=noEscapeStrPos($str,'\'',$i+1)) === false){
+                break;
+            }
+        }elseif(substr($str, $i, 2)=='=>'){
+            $key = substr($str, $s_pos, $i-$s_pos);
+            $i += 1;
+            $s_pos = $i+1;
+        }elseif(substr($str, $i, 6)==$ass){
+            list($aa,$ii) = strToArr(substr($str, $i));
+            if($aa===null){
+                break;
+            }
+            $pushByKey($str,$s_pos,$i,$arr,$key,$aa);
+            $i += $ii;
+            $s_pos = $i+1;
+        }elseif($str[$i]==','){
+            $pushByKey($str,$s_pos,$i,$arr,$key);
+            $s_pos = $i+1;
+        }elseif($str[$i]==')'){
+            $pushByKey($str,$s_pos,$i,$arr,$key);
+            return array($arr,$i);
+        }
+    }
+    return array(null,null);
+}
+
+class JSMin {
+  const ORD_LF            = 10;
+  const ORD_SPACE         = 32;
+  const ACTION_KEEP_A     = 1;
+  const ACTION_DELETE_A   = 2;
+  const ACTION_DELETE_A_B = 3;
+
+  protected $a           = '';
+  protected $b           = '';
+  protected $input       = '';
+  protected $inputIndex  = 0;
+  protected $inputLength = 0;
+  protected $lookAhead   = null;
+  protected $output      = '';
+
+  // -- Public Static Methods --------------------------------------------------
+
+  /**
+   * Minify Javascript
+   *
+   * @uses __construct()
+   * @uses min()
+   * @param string $js Javascript to be minified
+   * @return string
+   */
+  public static function minify($js) {
+    $jsmin = new JSMin($js);
+    return $jsmin->min();
+  }
+
+  // -- Public Instance Methods ------------------------------------------------
+
+  /**
+   * Constructor
+   *
+   * @param string $input Javascript to be minified
+   */
+  public function __construct($input) {
+    $this->input       = str_replace("\r\n", "\n", $input);
+    $this->inputLength = strlen($this->input);
+  }
+
+  // -- Protected Instance Methods ---------------------------------------------
+
+  /**
+   * Action -- do something! What to do is determined by the $command argument.
+   *
+   * action treats a string as a single character. Wow!
+   * action recognizes a regular expression if it is preceded by ( or , or =.
+   *
+   * @uses next()
+   * @uses get()
+   * @throws JSMinException If parser errors are found:
+   *         - Unterminated string literal
+   *         - Unterminated regular expression set in regex literal
+   *         - Unterminated regular expression literal
+   * @param int $command One of class constants:
+   *      ACTION_KEEP_A      Output A. Copy B to A. Get the next B.
+   *      ACTION_DELETE_A    Copy B to A. Get the next B. (Delete A).
+   *      ACTION_DELETE_A_B  Get the next B. (Delete B).
+  */
+  protected function action($command) {
+    switch($command) {
+      case self::ACTION_KEEP_A:
+        $this->output .= $this->a;
+
+      case self::ACTION_DELETE_A:
+        $this->a = $this->b;
+
+        if ($this->a === "'" || $this->a === '"') {
+          for (;;) {
+            $this->output .= $this->a;
+            $this->a       = $this->get();
+
+            if ($this->a === $this->b) {
+              break;
+            }
+
+            if (ord($this->a) <= self::ORD_LF) {
+              throw new JSMinException('Unterminated string literal.');
+            }
+
+            if ($this->a === '\\') {
+              $this->output .= $this->a;
+              $this->a       = $this->get();
+            }
+          }
+        }
+
+      case self::ACTION_DELETE_A_B:
+        $this->b = $this->next();
+
+        if ($this->b === '/' && (
+            $this->a === '(' || $this->a === ',' || $this->a === '=' ||
+            $this->a === ':' || $this->a === '[' || $this->a === '!' ||
+            $this->a === '&' || $this->a === '|' || $this->a === '?' ||
+            $this->a === '{' || $this->a === '}' || $this->a === ';' ||
+            $this->a === "\n" )) {
+
+          $this->output .= $this->a . $this->b;
+
+          for (;;) {
+            $this->a = $this->get();
+
+            if ($this->a === '[') {
+              /*
+                inside a regex [...] set, which MAY contain a '/' itself. Example: mootools Form.Validator near line 460:
+                  return Form.Validator.getValidator('IsEmpty').test(element) || (/^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]\.?){0,63}[a-z0-9!#$%&'*+/=?^_`{|}~-]@(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\])$/i).test(element.get('value'));
+              */
+              for (;;) {
+                $this->output .= $this->a;
+                $this->a = $this->get();
+
+                if ($this->a === ']') {
+                    break;
+                } elseif ($this->a === '\\') {
+                  $this->output .= $this->a;
+                  $this->a       = $this->get();
+                } elseif (ord($this->a) <= self::ORD_LF) {
+                  throw new JSMinException('Unterminated regular expression set in regex literal.');
+                }
+              }
+            } elseif ($this->a === '/') {
+              break;
+            } elseif ($this->a === '\\') {
+              $this->output .= $this->a;
+              $this->a       = $this->get();
+            } elseif (ord($this->a) <= self::ORD_LF) {
+              throw new JSMinException('Unterminated regular expression literal.');
+            }
+
+            $this->output .= $this->a;
+          }
+
+          $this->b = $this->next();
+        }
+    }
+  }
+
+  /**
+   * Get next char. Convert ctrl char to space.
+   *
+   * @return string|null
+   */
+  protected function get() {
+    $c = $this->lookAhead;
+    $this->lookAhead = null;
+
+    if ($c === null) {
+      if ($this->inputIndex < $this->inputLength) {
+        $c = substr($this->input, $this->inputIndex, 1);
+        $this->inputIndex += 1;
+      } else {
+        $c = null;
+      }
+    }
+
+    if ($c === "\r") {
+      return "\n";
+    }
+
+    if ($c === null || $c === "\n" || ord($c) >= self::ORD_SPACE) {
+      return $c;
+    }
+
+    return ' ';
+  }
+
+  /**
+   * Is $c a letter, digit, underscore, dollar sign, or non-ASCII character.
+   *
+   * @return bool
+   */
+  protected function isAlphaNum($c) {
+    return ord($c) > 126 || $c === '\\' || preg_match('/^[\w\$]$/', $c) === 1;
+  }
+
+  /**
+   * Perform minification, return result
+   *
+   * @uses action()
+   * @uses isAlphaNum()
+   * @uses get()
+   * @uses peek()
+   * @return string
+   */
+  protected function min() {
+    if (0 == strncmp($this->peek(), "\xef", 1)) {
+        $this->get();
+        $this->get();
+        $this->get();
+    } 
+
+    $this->a = "\n";
+    $this->action(self::ACTION_DELETE_A_B);
+
+    while ($this->a !== null) {
+      switch ($this->a) {
+        case ' ':
+          if ($this->isAlphaNum($this->b)) {
+            $this->action(self::ACTION_KEEP_A);
+          } else {
+            $this->action(self::ACTION_DELETE_A);
+          }
+          break;
+
+        case "\n":
+          switch ($this->b) {
+            case '{':
+            case '[':
+            case '(':
+            case '+':
+            case '-':
+            case '!':
+            case '~':
+              $this->action(self::ACTION_KEEP_A);
+              break;
+
+            case ' ':
+              $this->action(self::ACTION_DELETE_A_B);
+              break;
+
+            default:
+              if ($this->isAlphaNum($this->b)) {
+                $this->action(self::ACTION_KEEP_A);
+              }
+              else {
+                $this->action(self::ACTION_DELETE_A);
+              }
+          }
+          break;
+
+        default:
+          switch ($this->b) {
+            case ' ':
+              if ($this->isAlphaNum($this->a)) {
+                $this->action(self::ACTION_KEEP_A);
+                break;
+              }
+
+              $this->action(self::ACTION_DELETE_A_B);
+              break;
+
+            case "\n":
+              switch ($this->a) {
+                case '}':
+                case ']':
+                case ')':
+                case '+':
+                case '-':
+                case '"':
+                case "'":
+                  $this->action(self::ACTION_KEEP_A);
+                  break;
+
+                default:
+                  if ($this->isAlphaNum($this->a)) {
+                    $this->action(self::ACTION_KEEP_A);
+                  }
+                  else {
+                    $this->action(self::ACTION_DELETE_A_B);
+                  }
+              }
+              break;
+
+            default:
+              $this->action(self::ACTION_KEEP_A);
+              break;
+          }
+      }
+    }
+
+    return $this->output;
+  }
+
+  /**
+   * Get the next character, skipping over comments. peek() is used to see
+   *  if a '/' is followed by a '/' or '*'.
+   *
+   * @uses get()
+   * @uses peek()
+   * @throws JSMinException On unterminated comment.
+   * @return string
+   */
+  protected function next() {
+    $c = $this->get();
+
+    if ($c === '/') {
+      switch($this->peek()) {
+        case '/':
+          for (;;) {
+            $c = $this->get();
+
+            if (ord($c) <= self::ORD_LF) {
+              return $c;
+            }
+          }
+
+        case '*':
+          $this->get();
+
+          for (;;) {
+            switch($this->get()) {
+              case '*':
+                if ($this->peek() === '/') {
+                  $this->get();
+                  return ' ';
+                }
+                break;
+
+              case null:
+                throw new JSMinException('Unterminated comment.');
+            }
+          }
+
+        default:
+          return $c;
+      }
+    }
+
+    return $c;
+  }
+
+  /**
+   * Get next char. If is ctrl character, translate to a space or newline.
+   *
+   * @uses get()
+   * @return string|null
+   */
+  protected function peek() {
+    $this->lookAhead = $this->get();
+    return $this->lookAhead;
+  }
+}
+
+class JSMinException extends Exception {}
+
+final class FormatCss{
+    static private function indent($counts){
+        return implode(array_pad(array(), 4*$counts, ' '),'');
+    }
+    
+    static private function dealNote(&$str,&$i,&$c,$s_blank='',$blank=''){
+        $endpos = strpos($str, '*/', $i+2)+1;
+        if(in_array($before=substr($str, $i-1,1),array(';','}'))){//所有; } 之后的注释都换行
+            $b = '';
+            if($s_blank!==null){
+                $b = substr($str, $i-1,1)=='}'?$s_blank:$blank;//缩进处理
+            }
+            $i = $endpos+1;
+            $s = substr($str, 0, $i);
+            $s1 = ltrim(substr($str, $i+1));
+            $str = $s."\r\n".$b.$s1;
+            $c=strlen($str);
+        }elseif(strpos($s2=ltrim(substr($str, $endpos+1),"\t \x0B\0"),"\r\n")===0 || strpos($s2,"\n")===0){//注释后面有换行则加缩进
+            $i = $endpos+1;
+            $s = substr($str, 0, $i);
+            $str = $s."\r\n".$blank.ltrim(substr($str, $i+1));
+        }else{//其他注释不处理
+            $i = $endpos+1;
+        }
+    }
+
+    static private function dealEndSign(&$str,&$i,&$c,$s_blank,$blank){
+        $s = substr($str, 0, $i+1);
+        $o_s1 = substr($str, $i+1);
+        $s1 = ltrim($o_s1);
+
+        if($str[$i]=='}' && strlen($s)>1 && !preg_match("/[;{]\\s+}|\$/",$s)){
+            $s = substr_replace($s, "\r\n".$s_blank, -1, 0);//不以;或{结尾的}前加换行和缩进
+        }
+
+        if(substr($s1, 0, 1)=='}' && $str[$i]=='}'){
+            $str = $s."\r\n".$s1;
+        }elseif(substr($s1, 0, 1)=='}' && $str[$i]==';'){
+            $str = $s."\r\n".$s_blank.$s1;
+        }elseif(substr($s1, 0, 2)=='/*'){
+            if(($s2_before=substr($s2=ltrim($o_s1,"\t \x0B\0"), 0, 2))!='/*' && (strpos($s2,"\r\n")===0 || strpos($s2,"\n")===0)){
+                $str = $s."\r\n".($str[$i]==';'?$blank:$s_blank).ltrim($o_s1);
+            }else{
+                $str = $s.$s1;//紧接着注释则不换行
+            }
+        }elseif($str[$i]=='}'){
+            $str = $s."\r\n".$s_blank.$s1;
+        }elseif($str[$i]==';'){
+            $str = $s."\r\n".$blank.$s1;
+        }
+        $c=strlen($str);
+    }
+
+    static private function dealOne($str,$indentation=1){
+        $blank = self::indent($indentation);
+        $s_blank = self::indent($indentation-1);
+        $str=ltrim($str);
+        if($str[0]!='}'){
+            $str = "\r\n".$blank.$str;
+        }
+        for($i=0,$c=strlen($str);$i<$c;$i++){
+            if($str[$i]=='{'){
+                list($r,$l) = self::dealOne(substr($str,$i+1),$indentation+1);
+                if(!$r){
+                    break;
+                }
+                $str = substr($str, 0, $i+1).$r;
+                $c=strlen($str);
+                $i+=$l;
+            }elseif($str[$i]==':' || $str[$i]==','){
+                $str = substr($str, 0, $i+1).' '.ltrim(substr($str, $i+1));
+                $c=strlen($str);
+            }elseif(substr($str, $i, 2)=='/*'){
+                self::dealNote($str,$i,$c,$s_blank,$blank);
+            }elseif($str[$i]==';'){
+                self::dealEndSign($str,$i,$c,$s_blank,$blank);
+            }elseif($str[$i]=='}'){
+                self::dealEndSign($str,$i,$c,$s_blank,$blank);
+                return array($str,$i+1);
+            }
+        }
+        return array(null,null);
+    }
+
+    static public function format($str){
+        $str = trim($str);
+        $s_pos = 0;
+        for($i=0,$c=strlen($str);$i<$c;$i++){
+            if($str[$i]=='{'){
+                list($r,$l) = self::dealOne(substr($str, $i+1));
+                if($r===null){
+                    return null;
+                }
+                $str = substr($str, 0, $i+1).$r;
+                $c=strlen($str);
+                $i += $l;
+            }elseif(substr($str, $i, 2)=='/*'){
+                self::dealNote($str,$i,$c);
+            }
+        }
+        return $str;
     }
 }

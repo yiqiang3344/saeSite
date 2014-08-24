@@ -10,8 +10,12 @@ $yellow : #fde900;
 $pink :  #8c1227;
 $white : #fff;
 $gray :  #777;
-$_10_all : 10, 20, 30, 40, 50, 60, 70, 80, 90, all;
-$_1_10 : 1,2,3,4,5,6,7,8,9,10;
+$pecent_s : 1,2,3,4,5,6,7,8,9,10;
+$pecent_m : 10,15,20,25,30,35,40,45,50;
+$pecent_h : 50, 60, 70, 80, 90, all;
+$px_list_s : 1,2,3,4,5,6,7,8,9,10;
+$px_list_m : 10,20,30,40,50,60,70,80,90,100;
+$px_list_h : 100,150,200,300,400,500,600,700,800,900,960;
 @function color($c){
     @if $c=="red"{
         @return $red;
@@ -124,7 +128,7 @@ em, i{
     left:0;
 }
 /*width*/
-@each $v in $_10_all{
+@each $v in $pecent_s{
     .w#{$v} {
         @if $v==all{
             width: 100%;
@@ -133,8 +137,27 @@ em, i{
         }
     }
 }
+@each $v in $pecent_h{
+    .w#{$v} {
+        @if $v==all{
+            width: 100%;
+        }@else{
+            width: #{$v}#{"%"};
+        }
+    }
+}
+@each $v in $px_list_s{
+    .w#{$v}px {
+        width: #{$v}#{"px"};
+    }
+}
+@each $v in $px_list_h{
+    .w#{$v}px {
+        width: #{$v}#{"px"};
+    }
+}
 /*height*/
-@each $v in $_10_all{
+@each $v in $pecent_s{
     .h#{$v} {
         @if $v==all{
             height: 100%;
@@ -143,11 +166,30 @@ em, i{
         }
     }
 }
+@each $v in $pecent_h{
+    .h#{$v} {
+        @if $v==all{
+            height: 100%;
+        }@else{
+            height: #{$v}#{"%"};
+        }
+    }
+}
+@each $v in $px_list_s{
+    .h#{$v}px {
+        height: #{$v}#{"px"};
+    }
+}
+@each $v in $px_list_h{
+    .h#{$v}px {
+        height: #{$v}#{"px"};
+    }
+}
 /*margin*/
 .m0a{
     margin:0 auto;
 }
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .m#{$v} {
         margin: #{$v}#{"%"};
     }
@@ -156,55 +198,55 @@ em, i{
     }
 }
 /*mt*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .mt#{$v} {
         margin-top: #{$v}#{"%"};
     }
 }
 /*mr*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .mr#{$v} {
         margin-right: #{$v}#{"%"};
     }
 }
 /*mb*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .mb#{$v} {
         margin-bottom: #{$v}#{"%"};
     }
 }
 /*ml*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .ml#{$v} {
         margin-left: #{$v}#{"%"};
     }
 }
 /*padding*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .p#{$v} {
         padding: #{$v}#{"%"};
     }
 }
 /*pt*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .pt#{$v} {
         padding-top: #{$v}#{"%"};
     }
 }
 /*pr*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .pr#{$v} {
         padding-right: #{$v}#{"%"};
     }
 }
 /*pb*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .pb#{$v} {
         padding-bottom: #{$v}#{"%"};
     }
 }
 /*pl*/
-@each $v in $_1_10{
+@each $v in $pecent_s{
     .pl#{$v} {
         padding-left: #{$v}#{"%"};
     }

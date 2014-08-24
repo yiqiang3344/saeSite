@@ -187,6 +187,7 @@ class Controller extends CController {
         }
         $ret = array(
             'params' => array(
+                'myTools'=>getUrl('Main','Tools'),
                 'aList'=>$list
             ),
             'partials' => array(),

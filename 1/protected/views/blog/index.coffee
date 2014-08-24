@@ -8,4 +8,3 @@ window.oPage = oFinalPage.extend
             false
     __fInitData : ()->
         
-

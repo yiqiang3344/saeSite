@@ -4,4 +4,3 @@ window.oPage = oFinalPage.extend
     fBind : ()->
     __fInitData : ()->
         
-
