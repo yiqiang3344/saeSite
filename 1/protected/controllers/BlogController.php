@@ -29,7 +29,7 @@ class BlogController extends Controller
         $id = getInput('id','int');
         #start
         if(!($blog = MBlog::model('blogIndex')->with('blogCategory')->findByPk($id))){
-            throwException('博文不存在.',S::EXCEPTION_USE);
+            throwException('博文不存在.',S::EXCEPTION_USER);
         }
 
 
